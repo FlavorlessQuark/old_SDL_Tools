@@ -3,7 +3,7 @@
 void annhilate(Display *display)
 {
 	SDL_DestroyRenderer(display->renderer);
-	SDL_DestroyRenderer(display->window);
+	SDL_DestroyWindow(display->window);
 	SDL_Quit();
 }
 
