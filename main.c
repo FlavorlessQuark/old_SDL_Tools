@@ -3,8 +3,8 @@
 
 int main()
 {
-	game *game;
-	game = game_init();
-	game->display = display_init();
-	update(game);
+	Display *display;
+
+	display = display_init();
+	update(display);
 }
