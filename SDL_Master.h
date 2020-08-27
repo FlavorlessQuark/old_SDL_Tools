@@ -32,6 +32,7 @@ typedef struct s_display
 	SDL_Renderer *renderer;
 	SDL_Window	*window;
 	SDL_Rect	*spritesheet;
+	SDL_Texture	*tex;
 
 	Input		input;
 	int			state;
