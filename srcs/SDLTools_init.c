@@ -1,18 +1,23 @@
 #include "SDL_Master.h"
 
-void annhilate(Display *display)
+SpriteSheet *init_spritesheet(SDL_Texture *sheet, int count, int w, int h)
 {
-	SDL_DestroyRenderer(display->renderer);
-	SDL_DestroyWindow(display->window);
-	SDL_Quit();
+
 }
 
-Display *display_init()
+Input *init_input()
+{
+
+}
+
+ScreenDiv *init_grid()
+{
+
+}
+
+Display *init_display()
 {
 	Display *display;
-
-	SDL_Init(SDL_INIT_EVERYTHING);
-	Uint32 render_flags = SDL_RENDERER_SOFTWARE;
 
 	display = malloc(sizeof(Display));
 	display->spritesheet = malloc(sizeof(SDL_Rect) * ((VAL * VAL) * VAL));
@@ -21,4 +26,14 @@ Display *display_init()
 	display->renderer = SDL_CreateRenderer(display->window, -1, render_flags);
 
 	return display;
+}
+
+Master *init_master()
+{
+	Master *master;
+
+	SDL_Init(SDL_INIT_EVERYTHING);
+	Uint32 render_flags = SDL_RENDERER_SOFTWARE;
+
+	return master;
 }

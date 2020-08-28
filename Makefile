@@ -1,12 +1,12 @@
 NAME = #Program-name
-#FLAGS = #Compile flags -Wall -Wextra -Werror
+FLAGS = #Compile flags -Wall -Wextra -Werror
 
-#FILENAMES = Source files names (no extension or path)
-#INCL = -I [Include filenames]
-#LIBS = -L [Librairies to compile with if any]
+FILENAMES = main update display_init buttons
+INCL = -I incl/
+LIB = -L ~/.brew/lib -l SDL2 -l sdl2_image
 
-#SRCS = $(addprefix([path], $(addsuffix [extension], $(FILENAMES)))
-#OBJS = $(addprefix([path], $(addsuffix [extension], $(FILENAMES)))
+SRCS = $(addprefix([path], $(addsuffix [extension], $(FILENAMES)))
+OBJS = $(addprefix([path], $(addsuffix [extension], $(FILENAMES)))
 
 all : $(NAME)
 
@@ -23,11 +23,11 @@ clean :
 fclean : clean
 	rm -rf $(NAME)
 
-push : clean
+update : clean
 	git add .
 	git commit -m "$(MSG)"
 	git push origin master
 
 re : fclean all
 
-.PHONY : $(NAME) clean fclean push re
+.PHONY : $(NAME) clean fclean update re
