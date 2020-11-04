@@ -6,6 +6,8 @@
 # include <stdbool.h>
 
 typedef struct s_master Master;
+typedef struct s_keyval C_KeyVal;
+typedef struct s_keyval C_Dict;
 
 typedef struct
 {
@@ -37,13 +39,6 @@ typedef struct SDT_EventNode
 	SDT_EventNode *next;
 }				SDT_EventNode;
 
-typedef struct 	SDT_Dict
-{
-	int 		size;
-	int			*keys;
-
-	SDT_Object	**values;
-}				SDT_Dict;
 
 typedef union	SDT_rgba
 {
@@ -75,7 +70,7 @@ typedef struct 	SDT_Screenspace
 typedef struct
 {
 	SDT_Display		display;
-	SDT_Dict		*objects;
+	C_Dict			*objects;
 	SDT_Input		*input;
 
 	SDT_Screenspace	*screenspace;
@@ -94,7 +89,7 @@ void			SDT_ScreenRemove(int ID);
 void			SDT_ScreenEmpty();
 
 /* File : SDT_dict.c */
-
+/* Will probably have a similar thing in C lib... */
 SDT_Dict	*SDT_DictRetrieve(int ID, SDT_Dict dict);
 SDT_Dict	*SDT_DictInit(int size);
 void		 SDT_DictRemove(int ID, SDT_Dict dict);
@@ -116,8 +111,5 @@ void	ref_texture(SDL_Rect *ref, int width, int length);
 
 /*File SDT_update.c */
 void	SDT_Update();
-void	SDT_Render();
-void	SDT_Events();
-void	SDT_Inputs();
 
 #endif
