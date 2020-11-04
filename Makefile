@@ -23,10 +23,12 @@ clean :
 fclean : clean
 	rm -rf $(NAME)
 
-update : clean
+save : clean
 	git add .
 	git commit -m "$(MSG)"
-	git push origin master
+	git pull
+	wait
+	git push
 
 re : fclean all
 
