@@ -16,6 +16,9 @@
 
 # define VAL 0
 
+# if WIN_H == 0 || WIN_W == 0
+#   error "Window size is not defined in SDT_def.h"
+# endif
 /* Colors */
 
 # define WHITE 	0xFfFfFf
