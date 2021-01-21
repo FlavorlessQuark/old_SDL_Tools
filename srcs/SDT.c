@@ -1,42 +1,29 @@
-#include "SDT.h"
+#include "../../incl/SDT.h"
 
-static void		 	SDT_Exit()
+void SDT_InputLoop(void)
 {
-	SDT_ScreenEmpty();
-	SDT_DictEmpty();
-	SDT_EventEmpty();
-	SDL_DestroyWindow(SDT_SceneGet()->display.window);
-	SDL_Quit();
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+			exit(0);
+	}
 }
 
-static void		SDT_Init(SDT_Scene *scene)
-{
-	SDL_Window	*window;
+void SDT_RenderLoop(void)
+{	
+	SDT_Scene *scene;
 
-	SDL_Init(SDL_INIT_EVERYTHING);
-	window = SDL_CreateWindow(WIN_NAME,WIN_X, WIN_Y,WIN_W, WIN_,SDL_WINDOW_SHOWN);
-
-	scene->display.window = window;
-	scene->display.renderer = SDL_CreateRenderer(window, -1, 0);
-
-	atexit(SDT_Exit());
+	scene = SDT_GetScene();
+	SDL_RenderCopy(scene->renderer, scene->tex, NULL, NULL);
+	SDL_RenderPresent(scene->renderer);
+	SDL_SetRenderDrawColor(scene->renderer, 0, 0, 0, 255);
+	// SDL_RenderClear(scene->renderer);
 }
 
-
-SDT_Scene		*SDT_SceneGet()
+void SDT_Update(void)
 {
-	static SDT_Scene scene;
-
-	if (scene == NULL)
-		SDT_Init(&scene)
-	return &scene;
+	SDT_InputLoop();
+	SDT_RenderLoop();
 }
-#pragam start SDT_SceneGet 1
-
-void			SDT_ScreenAdd(SDT_Object *object)
-{
-/* Calculate grid coordinates from object , add to corresponding  */
-}
-
-void			SDT_ScreenRemove(int ID);
-void			SDT_ScreenEmpty();
