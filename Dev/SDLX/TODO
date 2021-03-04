@@ -1,0 +1,21 @@
+Animations:
+
+Link state to Anim
+Anim speed
+
+Add / Remove anim to animator
+
+State machine:
+
+Link state A to state B
+^ on conditions
+Remove state (also removes links)
+Remove links
+
+Direction system
+
+Collision system:
+
+Simple -> small games, no double buffering.
+Complex-> partitioned, with physics
+Add bodies to system -> depending on inital # of bodies partition screen
