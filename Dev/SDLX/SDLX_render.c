@@ -32,7 +32,6 @@ void	SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display)
 	size_t i;
 
 	i = 0;
-	SDL_Log("Queue has %zu\n", queue->amount);
 	while (i < queue->amount)
 	{
 		SDL_RenderCopyEx(display->renderer,

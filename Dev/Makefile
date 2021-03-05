@@ -1,4 +1,5 @@
 NAME = test
+STATIC_LIB = libSDLX.a
 
 FLAGS = -Wall -Wextra -Werror
 INCLUDES = -I includes/ -I includes/includes_SDL2/
@@ -31,8 +32,8 @@ OBJS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 
 all: $(NAME)
 
-$(NAME): $(BIN_DIR) $(OBJS)
-	gcc $(FLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBRARIES)
+$(NAME): archive
+	gcc $(FLAGS) $(INCLUDES) -o $(NAME) main.c $(LIBRARIES) -L -l $(STATIC_LIB)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
@@ -40,6 +41,10 @@ $(BIN_DIR):
 $(BIN_DIR)%.o: %.c
 	mkdir -p $(BIN_DIR)$(dir $<)
 	gcc $(FLAGS) $(INCLUDES) -c $< -o $@
+
+archive: $(BIN_DIR) $(OBJS)
+	ar -rc $(STATIC_LIB) $(addsuffix .o, $(addprefix bin/SDLX/, $(SDLX_NAMES)))  
+	ranlib $(STATIC_LIB)
 
 run: re clean
 	./$(NAME)

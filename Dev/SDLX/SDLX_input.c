@@ -39,7 +39,6 @@ void SDLX_InputMap(int sdl_code, int type, int sdlx_code, int controller_no)
 	new_mapping->dest = &input.input[sdlx_code];
 	new_mapping->controller_no = controller_no;
 	keymap = new_mapping;
-	SDL_Log("New input map %d %d\n", keymap->type, keymap->key);
 }
 
 // Unmapping input here, commented out for now as I'm not sure if I will keep this a list or change to an array
