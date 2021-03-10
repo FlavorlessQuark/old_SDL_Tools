@@ -5,7 +5,7 @@ void	SDLX_ResetWindow(void)
 	SDLX_Display *display;
 
 	display = SDLX_DisplayGet();
-	
+
 	SDL_RenderClear(display->renderer);
 	SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 0);
 	if (display->background)
@@ -27,6 +27,8 @@ void SDLX_RenderMessage(TTF_Font *font, char *msg, const SDL_Rect *src, const SD
 	SDL_FreeSurface(message);
 }
 
+// This as a template display. User is free to create their own renderQ displayer
+// this one just puts everything on the screen starting from the lowest Queue (assumed to be the background queue)
 void	SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display)
 {
 	size_t i;

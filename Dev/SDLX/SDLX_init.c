@@ -9,13 +9,6 @@ void	SDLX_Close(void)
 	SDL_Quit();
 }
 
-void	SDLX_Start()
-{
-	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
-	SDLX_Init();
-	atexit(SDLX_Close);
-}
 
 SDLX_Display	*SDLX_DisplayGet(void) {return &display;}
 
@@ -30,4 +23,13 @@ void			SDLX_DisplaySet(void)
 				SDL_WINDOW_SHOWN
 	);
 	display.renderer = SDL_CreateRenderer(display.window, -1, 0);
+}
+
+void	SDLX_Start()
+{
+	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
+	SDLX_DisplaySet();
+	SDLX_Init();
+	atexit(SDLX_Close);
 }

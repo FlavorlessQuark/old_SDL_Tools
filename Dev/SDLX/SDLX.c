@@ -2,6 +2,12 @@
 # define ANIMS_CT 5
 # define QUEUE_CT 3
 
+
+// This struct to be visible within this file only
+// It is necessary to internally keep track of input, animations and render queues in orde rto update them properly
+// Any animator or rander queue not created with the functions within this file or not added via one of these functions
+// cannot be kept track of and therefore cannot be automagically updated
+
 typedef struct _SDLX_Intern
 {
 	SDLX_Display		*display;
@@ -52,12 +58,17 @@ void	SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite)
 	_intern.renderQueues[queue].amount++;
 }
 
+// In case user needs a render q to modifiy it
 SDLX_RenderQueue **SDLX_RenderQueueFetch(int *amount)
 {
 	if (amount)
 		*amount = _intern.queuesCount;
 	return &_intern.renderQueues;
 }
+
+// This create an aimator from sratch or as a copy of another.
+// Indeed the copying may be useful if (when)  two different entities use the saem set of animatons and therefore
+// might be on different frames / state of animation
 
 SDLX_Animator *SDLX_AnimatorInstantiate(SDLX_Animator *copy, SDLX_Anim **anims, int amount, SDL_Rect *dst)
 {
@@ -94,6 +105,7 @@ SDLX_Animator *SDLX_AnimatorInstantiate(SDLX_Animator *copy, SDLX_Anim **anims, 
 	_intern.animatorCount++;
 	return &_intern.animators[i];
 }
+
 
 void SDLX_AnimationUpdate(void)
 {
@@ -133,7 +145,7 @@ void SDLX_FPSAdjust()
 	if (start != 0)
 	{
 		delay = start - SDL_GetTicks();
-		delay = MAX(FRAME_TIME - delay , 0); 
+		delay = MAX(FRAME_TIME - delay , 0);
 		SDL_Delay(delay);
 	}
 	start = SDL_GetTicks();

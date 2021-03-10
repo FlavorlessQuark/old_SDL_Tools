@@ -67,6 +67,9 @@ int SDLX_InputRemap(int sdl_code, int type, int sdlx_code, int controller_no)
 	return (1);
 }
 
+// This might need more input "types" but these would require that the events be saved
+// Events can't be saved if they are left for the user to poll
+
 void SDLX_InputUpdate(SDL_Event SDL_UNUSED event)
 {
 	SDLX_KeyMap 	*map_node;
@@ -95,13 +98,16 @@ void SDLX_InputUpdate(SDL_Event SDL_UNUSED event)
 								SDL_GameControllerFromPlayerIndex(map_node->controller_no),
 								map_node->key);
 			*(map_node->dest) = MAX(*(map_node->dest), controller_button);
-		}   
+		}
 		map_node = map_node->next;
 	}
 }
 
+
+// The below function might be best to be left to the user
+// This is prevent user from accessing events
 void SDLX_InputLoop(void)
-{	
+{
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event))
