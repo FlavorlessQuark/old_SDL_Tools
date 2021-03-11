@@ -1,7 +1,7 @@
 /**
  *  @file:
  *  @author: FlavorlessQuark
- *  Last Modified: 2021-03-09 22:59:43
+ *  Last Modified: 2021-03-10 22:04:58
  *
  * 	IMPORTANT : This library relies on SDL2. It assumes SDL2 lives in the same includes/
  *  folder, in a directory named SDL2.
@@ -93,3 +93,25 @@ void			SDLX_FPSAdjust(void);
 SDLX_Anim		*SDLX_AnimLoad(SDL_Texture *tex, int cycle, int cell_w, int cell_h, SDL_bool loop, int x_off, int y_off);
 
 #endif
+
+
+
+
+void About(void)
+{
+	char *self[6];
+
+	self =	{
+				"Mainly C programmer",
+	 			"42 Silicon valley / 42 Paris alumna",
+				"I like to free() memory in my spare time",
+				"Interested in anything from AI to Graphics to Game Dev",
+				"Regex enthusiat",
+				"\"Ab uno disce omnes\" - A wise man"; }
+
+	for (int i; i = 0, i < 5)
+		printf("[%d]: %s\n", i + 1, self[i]);
+
+	return ;
+}
+
