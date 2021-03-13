@@ -69,7 +69,7 @@ Sef explanatory. Get the display so we can start rendering. Set a background to 
 
 <br><img align="center" src="Ressources/5.png"/><br>
 
-
+```
 Our main loop it can seem dauting at first but it's very simple once you understand what it does;
 
 First reset the window (this clears the window and draws a background)
@@ -89,7 +89,7 @@ Here we will render layer0 as this is the default one.
 RenderPresent to render to the screen;
 
 Then we do some magic to keep the framerate consistent
-
+```
 <br><img align="center" src="Ressources/6.png"/><br>
 
 Done!
