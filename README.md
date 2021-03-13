@@ -9,10 +9,10 @@ Wrapper for the SDL library
 **[Known Issues](#known-issues)**<br>
 **[Usage](#usage)**<br>
 **[Code example](#code-examples)**<br>
-**[Upcomming features and fixes](#pcoming-features-and-fixes)**<br>
+**[Upcomming features and fixes](#upcoming-features-and-fixes)**<br>
 
 
-# Dependencies
+## Dependencies
 
 This assumes that the SDL2 library header files are located in SDL2/ in your includes folder
 
@@ -20,17 +20,17 @@ This also uses SDL2_image, SDL2_ttf and SDL2_mixer
 
 These are available on SDL2 websie, via brew or in this repository under Dev/includes/SDL2
 
-# Contents
+## Contents
 
 This library contains animations, input and display tools. - for now-
 
 
-# Known issues
+## Known issues
 
 None so far. This program only contains features >:)
 
 
-# Usage
+## Usage
 
 ```
 git clone https://github.com/FlavorlessQuark/SDL_Tools/Release
@@ -95,7 +95,7 @@ Then we do some magic to keep the framerate consistent
 Done!
 
 
-# Upcoming features and fixes
+## Upcoming features and fixes
 
 - Fix input mapper only accepts 5 mappings. Input mapper is currently static . needs to be allocated /reallocated
 
