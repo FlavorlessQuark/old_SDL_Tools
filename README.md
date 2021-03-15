@@ -110,3 +110,5 @@ Done!
 - Add animations to animator
 
 - Maybe remove aniations from animator (would require animation ID)
+
+- Add a render queue parameter to sprte and render accoringly
