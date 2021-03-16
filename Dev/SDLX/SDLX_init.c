@@ -27,7 +27,8 @@ void			SDLX_DisplaySet(void)
 
 void	SDLX_Start()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	if (!SDL_WasInit(0))
+		SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
 	SDLX_DisplaySet();
 	SDLX_Init();
