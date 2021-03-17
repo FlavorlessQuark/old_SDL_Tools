@@ -97,15 +97,9 @@ Done!
 
 ## Upcoming features and fixes
 
-- Fix input mapper only accepts 5 mappings. Input mapper is currently static . needs to be allocated /reallocated
-
-- Fix SDLX_DisplaySet() not called. Somehow not causing issues but still needs to be fixed
-
 - Add Input remap
 
 - Potential typos in this ReadMe
-
-- Only init SDL if it wasnt already initialized
 
 - Add animations to animator
 
