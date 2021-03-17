@@ -3,6 +3,7 @@
 
 - Updated 'Upcoming fixes and features' in README to reflect this changelog
 - Fixed a bug where SDLX would initialize 2 windows
+- removed legacy function SDLX_screen_reset
 
 ------------------
 
