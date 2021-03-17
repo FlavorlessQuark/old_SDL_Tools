@@ -15,7 +15,6 @@ int main()
 
 	i = 0;
 	SDLX_Start();
-	SDLX_DisplaySet();
 	display = SDLX_DisplayGet();
 	tex = SDL_CreateTextureFromSurface(display->renderer, IMG_Load("test.png"));
 	dst.h = 32;
@@ -35,8 +34,9 @@ int main()
 	SDLX_RenderQueueAdd(0, anim->sprites[0]);
 	SDLX_RenderQueueAdd(0, anim->sprites[0]);
 	SDLX_RenderQueueAdd(0, anim->sprites[0]);
-	SDLX_RenderQueueAdd(0, anim->sprites[0]);
 	//SDL_Log("Init\n");
+	i = 10;
+	int n = 0;
 	while (1)
 	{
 		SDLX_ResetWindow();
@@ -46,5 +46,12 @@ int main()
 		SDLX_RenderQueueDisplay(SDLX_RenderQueueFetch(NULL)[0], display);
 		SDL_RenderPresent(display->renderer);
 		SDLX_FPSAdjust();
+		while (i < n)
+		{
+			SDLX_RenderQueueAdd(0, anim->sprites[0]);
+			i++;
+		}
+		n += 2;
+		i = 0;
 	}
 }

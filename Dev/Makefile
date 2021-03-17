@@ -2,7 +2,7 @@ NAME = test
 STATIC_LIB = libSDLX.a
 
 DEBUG_FLAGS= -fsanitize=address
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror $(DEBUG_FLAGS)
 INCLUDES = -I includes/ -I includes/includes_SDL2/
 
 LIB_DIR = libs/
