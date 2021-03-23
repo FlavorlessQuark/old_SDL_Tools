@@ -14,7 +14,7 @@ int main()
 	int i;
 
 	i = 0;
-	SDLX_Start();
+	SDLX_Start("DEFAULT", WIN_X, WIN_Y, WIN_H, WIN_W, SDL_WINDOW_SHOWN);
 	display = SDLX_DisplayGet();
 	tex = SDL_CreateTextureFromSurface(display->renderer, IMG_Load("test.png"));
 	dst.h = 32;
