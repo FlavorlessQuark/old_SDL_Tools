@@ -1,7 +1,7 @@
 /**
  *  @file:
  *  @author: FlavorlessQuark
- *  Last Modified: 2021-03-10 22:06:12
+ *  Last Modified: 2021-03-09 22:59:10
  *
  * 	IMPORTANT : This library relies on SDL2. It assumes SDL2 lives in the same includes/
  *  folder, in a directory named SDL2.
@@ -41,20 +41,15 @@
 # endif
 
 /**
- * @brief initializes SDLX and creates a display. Should be called once at program start
+ * @brief initializes SDLX and creates a display
  */
-void			SDLX_Start();
+void	SDLX_Start(char *name, int x, int y, int h, int w, int flags);
 /**
  * @brief reset or sets the display
  */
-void			SDLX_DisplaySet(void);
+void			SDLX_DisplaySet(char *name, int x, int y, int h, int w, int flags);
 void			SDLX_BackgroundSet(SDL_Texture *bg);
 SDLX_Display	*SDLX_DisplayGet(void);
-
-/**
-* @brief Legacy function to clear screen, use SDLX_ResetWindow instead
- */
-void			SDLX_screen_reset(SDL_Renderer *renderer, SDL_Color *bg_color);
 
 void			SDLX_AnimationUpdate(void);
 void			SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite);
@@ -93,4 +88,3 @@ void			SDLX_FPSAdjust(void);
 SDLX_Anim		*SDLX_AnimLoad(SDL_Texture *tex, int cycle, int cell_w, int cell_h, SDL_bool loop, int x_off, int y_off);
 
 #endif
-
