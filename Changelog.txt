@@ -1,0 +1,27 @@
+03/22/2021
+
+- Changed SDLX_Start and SDLX_DisplaySet() to take arguments instead of being static
+
+------------------
+
+03/18/2021
+
+- Fixed a bug where archive would require _asan symbols
+
+------------------
+
+03/17/2021
+
+- Updated 'Upcoming fixes and features' in README to reflect this changelog
+- Fixed a bug where SDLX would initialize 2 windows
+- removed legacy function SDLX_screen_reset
+
+------------------
+
+03/16/2021
+
+- Fixed a bug where SDLX would set the display properly
+- Fixed a bug where SDLX would re-initialize SDL if it was already initialized
+- Fixed a bug where renderQueues would not allocate enough memory
+- Fixed a bug where input mapper would not permit more than 5 maps
+- Cleaned up error messages

@@ -14,8 +14,7 @@ int main()
 	int i;
 
 	i = 0;
-	SDLX_Start();
-	SDLX_DisplaySet();
+	SDLX_Start("DEFAULT", WIN_X, WIN_Y, WIN_H, WIN_W, SDL_WINDOW_SHOWN);
 	display = SDLX_DisplayGet();
 	tex = SDL_CreateTextureFromSurface(display->renderer, IMG_Load("test.png"));
 	dst.h = 32;
@@ -30,15 +29,29 @@ int main()
 	bnim = SDLX_AnimLoad(tex, 8, 32, 32, SDL_FALSE, 0, 0);
 	a = SDLX_AnimatorInstantiate(NULL, &anim, 1, &dst);
 	b = SDLX_AnimatorInstantiate(a, NULL, 1, &bdst);
+	SDLX_RenderQueueAdd(0, anim->sprites[0]);
+	SDLX_RenderQueueAdd(0, anim->sprites[0]);
+	SDLX_RenderQueueAdd(0, anim->sprites[0]);
+	SDLX_RenderQueueAdd(0, anim->sprites[0]);
+	SDLX_RenderQueueAdd(0, anim->sprites[0]);
 	//SDL_Log("Init\n");
+	i = 10;
+	int n = 0;
 	while (1)
 	{
 		SDLX_ResetWindow();
 		SDLX_InputLoop();
-		SDLX_AnimationUpdate();
-		SDL_SetRenderDrawColor(display->renderer, i, 0, 0, 255);
+		// SDLX_AnimationUpdate();
+		// SDL_SetRenderDrawColor(display->renderer, i, 0, 0, 255);
 		SDLX_RenderQueueDisplay(SDLX_RenderQueueFetch(NULL)[0], display);
 		SDL_RenderPresent(display->renderer);
 		SDLX_FPSAdjust();
+		while (i < n)
+		{
+			SDLX_RenderQueueAdd(0, anim->sprites[0]);
+			i++;
+		}
+		n += 2;
+		i = 0;
 	}
 }

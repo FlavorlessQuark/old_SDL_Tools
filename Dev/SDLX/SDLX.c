@@ -33,7 +33,6 @@ void SDLX_Init(void)
 
 	_intern.queuesCount = QUEUE_CT;
 	_intern.queuesMax = QUEUE_CT;
-
 	_intern.display = SDLX_DisplayGet();
 	_intern.animators = calloc(ANIMS_CT, sizeof(SDLX_Animator));
 	_intern.renderQueues = calloc(QUEUE_CT, sizeof(SDLX_RenderQueue));
@@ -52,7 +51,7 @@ void	SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite)
 	if (_intern.renderQueues[queue].capacity == _intern.renderQueues[queue].amount)
 	{
 		_intern.renderQueues[queue].capacity *= 2;
-		SDL_realloc(_intern.renderQueues[queue].sprites, _intern.renderQueues[queue].capacity);
+		_intern.renderQueues[queue].sprites = SDL_realloc(_intern.renderQueues[queue].sprites,_intern.renderQueues[queue].capacity * sizeof(SDLX_Sprite));
 	}
 	_intern.renderQueues[queue].sprites[_intern.renderQueues[queue].amount] = sprite;
 	_intern.renderQueues[queue].amount++;
