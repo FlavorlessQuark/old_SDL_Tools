@@ -54,7 +54,12 @@ typedef struct SDLX_RenderQueue
 	SDLX_Sprite *sprites;
 }	SDLX_RenderQueue;
 
-
+typedef struct SDLX_Circle
+{
+	double x;
+	double y;
+	double radius;
+}				SDLX_Circle;
 
 
 #endif
