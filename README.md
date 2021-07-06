@@ -32,6 +32,8 @@ None so far. This program only contains features >:)
 
 ## Usage
 
+This project has been compiled for OSX only, if you are using another system, you may want to either recompile the library into an archive or shared object, or compile directly with the source files;
+
 ```
 git clone https://github.com/FlavorlessQuark/SDL_Tools/Release
 copy the contents of the includes folder into your project's include directory
