@@ -106,3 +106,9 @@ Done!
 - Maybe remove aniations from animator (would require animation ID)
 
 - Add a render queue parameter to sprte and render accoringly
+
+- Override options for render Q / animatiors and init functions (user might want to not use them at all or use their own rendering functions)
+
+- UI things ~~ Interaction layers maybe
+
+- Interaction layers? i.e : Something that goes through wall would check for collisions on every layer but the "walls" layer.

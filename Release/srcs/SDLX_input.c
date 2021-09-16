@@ -5,32 +5,11 @@
 // Input can bet fetched via SDLX_InputGet();
 // Keymap to contain all keymappings. User shouldn't be able to
 // access this
-typedef struct	SDLX_KeyMap
-{
-	int key;
-	int type;
-	int	*dest;
-	int value;
-	int controller_no;
-
-	struct SDLX_KeyMap *next;
-}	SDLX_KeyMap;
 
 static SDLX_Input input;
 static SDLX_KeyMap *keymap;
-static input_buffer[INPUT_AMOUNT];
 
 SDLX_Input	SDLX_InputGet(void) {return input;}
-
-void 		SDLX_InputReset(int key) {input.input[key] = 0;}
-
-void 		SDLX_InputResetBuffer(void)
-{
-	SDL_memcpy4(input_buffer, input.input, INPUT_AMOUNT);
-	SDL_memset4(input.input, 0, INPUT_AMOUNT);
-	input.mouse_click = SDLX_FALSE;
-	input.key_down = SDLX_NONE;
-}
 
 int			SDLX_DirReverse(int dir)
 {
@@ -41,8 +20,7 @@ int			SDLX_DirReverse(int dir)
 	return SDLX_NONE;
 }
 //sdl_code as sdl macro defining what key
-
-void SDLX_InputMap(int sdl_code, int type, int sdlx_code, int value, int controller_no)
+void SDLX_InputMap(int sdl_code, int type, int sdlx_code, int controller_no)
 {
 	SDLX_KeyMap *new_mapping;
 
@@ -57,7 +35,6 @@ void SDLX_InputMap(int sdl_code, int type, int sdlx_code, int value, int control
 	new_mapping = calloc(1, sizeof(SDLX_KeyMap));
 	new_mapping->next = keymap;
 	new_mapping->type = type;
-	new_mapping->value = value;
 	new_mapping->key = sdl_code;
 	new_mapping->dest = &input.input[sdlx_code];
 	new_mapping->controller_no = controller_no;
@@ -72,7 +49,7 @@ void SDLX_InputMap(int sdl_code, int type, int sdlx_code, int value, int control
 //	SDLX_KeyMap *map;
 //}
 
-int SDLX_InputRemap(int sdl_code, int type, int sdlx_code, int value,  int controller_no)
+int SDLX_InputRemap(int sdl_code, int type, int sdlx_code, int controller_no)
 {
 	SDLX_KeyMap *map;
 
@@ -90,92 +67,45 @@ int SDLX_InputRemap(int sdl_code, int type, int sdlx_code, int value,  int contr
 	return (1);
 }
 
-
-//SPECIFIC KEY LIKE W A S D ETC
-// int SDLX_GetKeyState(int key)
-// {
-
-// }
-
-// KEYMAP KEY LIKE SLDX_UP, DOWN ETC
-int SDLX_GetKeyMapState(int key)
-{
-	int state;
-	int pstate;
-
-	state = input.input[key];
-	pstate = input_buffer[key];
-
-	if (state > 0 && pstate > 0)
-		return SDLX_KEYHELD;
-	else if (state == 0 && pstate > 0)
-		return SDLX_KEYUP;
-	else if (state > 0 && pstate == 0)
-		return SDLX_KEYDOWN;
-	else
-		return SDLX_NONE;
-}
-
-
-void _GetInputState(SDLX_KeyMap 	*map_node)
-{
-	const Uint8		*keyboard;
-	int input_val;
-
-	keyboard = SDL_GetKeyboardState(NULL);
-
-	if (map_node->type == SDLX_KEYBOARD)
-		input_val = (keyboard[map_node->key] * map_node->value);
-	else if (map_node->type == SDLX_CONTROLLER)
-	{
-		input_val = SDL_GameControllerGetButton(
-							SDL_GameControllerFromPlayerIndex(map_node->controller_no),
-							map_node->key);
-	}
-	*(map_node->dest) |= (input_val * map_node->value);
-}
-
 // This might need more input "types" but these would require that the events be saved
 // Events can't be saved if they are left for the user to poll
-// Lies and deception. They CAN be saved AHA! PEEKEVENTS~
 
 void SDLX_InputUpdate(SDL_Event SDL_UNUSED event)
 {
 	SDLX_KeyMap 	*map_node;
-	SDL_Event		e[1];
 	int				controller_button;
-	int 			eNum;
+	int 			i;
+	const Uint8		*keyboard;
+
+	keyboard = SDL_GetKeyboardState(NULL);
+	map_node = keymap;
+	i = 0;
+	//SDL_Log("Updating input \n");
+	while (i < 5)
+	{
+		input.input[i] = 0;
+		i++;
+	}
 
 	map_node = keymap;
-
-	SDL_GetMouseState(&input.mouse.x, &input.mouse.y);
-	SDL_GetRelativeMouseState(&input.mouse_delta.x, &input.mouse_delta.y);
-	SDL_PumpEvents();
-
-	SDLX_InputResetBuffer();
-	eNum = SDL_PeepEvents(e, 1, SDL_PEEKEVENT, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP);
-
-	if (e[0].button.type == SDL_MOUSEBUTTONUP || e[0].button.type == SDL_MOUSEBUTTONDOWN)
-			input.mouse_click = e[0].button.type;
-	map_node = keymap;
-;
 	while (map_node)
 	{
-		_GetInputState(map_node);
+		if (map_node->type == SDLX_KEYBOARD)
+			*(map_node->dest) = MAX(keyboard[map_node->key], *(map_node->dest));
+		else if (map_node->type == SDLX_CONTROLLER)
+		{
+			controller_button = SDL_GameControllerGetButton(
+								SDL_GameControllerFromPlayerIndex(map_node->controller_no),
+								map_node->key);
+			*(map_node->dest) = MAX(*(map_node->dest), controller_button);
+		}
 		map_node = map_node->next;
 	}
-	// for (int i = 0; i < 10; i++)
-	// 	printf("[%d, %d] ", i, input.input[i]);
-	// printf("\n Buffer : \n");
-	// for (int n = 0; n < 10; n++)
-	// 	printf("[%d, %d] ", n, input_buffer[n]);
-	// printf("\n-------------------------------\n");
-	if (input.input[1] == 0 && input_buffer[1] >= 1)
-		printf("UPPPPP \n");
 }
 
 
-// The below function only as placeholder else SDL doesn't render window
+// The below function might be best to be left to the user
+// This is prevent user from accessing events
 void SDLX_InputLoop(void)
 {
 	SDL_Event event;
@@ -185,4 +115,5 @@ void SDLX_InputLoop(void)
 		if (event.type == SDL_QUIT)
 			exit(0);
 	}
+	SDLX_InputUpdate(event);
 }

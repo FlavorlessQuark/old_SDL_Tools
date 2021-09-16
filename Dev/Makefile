@@ -36,7 +36,7 @@ OBJS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 all: $(NAME)
 
 $(NAME): archive
-	gcc $(FLAGS) $(INCLUDES) -o $(NAME) main.c $(LINUX)
+	gcc $(FLAGS) $(INCLUDES) -o $(NAME) main.c $(MACH_0) $(STATIC_LIB)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)

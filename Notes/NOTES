@@ -1,0 +1,31 @@
+UI being dependent on anim is something that has been bothering me for some time.
+Utimately, I would like SDLX to have each of its components work as standalone i.e : .c ,.h and struct.h would ideally
+be all that is needed for a part of this library to work and have it not rely on anything else
+
+For now UI requires an animator to function but I my have found a way to cicumvent this.
+Animator has a dst and a dstptr. Upon creation, a dstptr must be passed to Animator, that is to allow it to be "attached" to something else
+for example, to a player's hitbox. In that way the animator's rendering desitnation chnages as the player's location changes.
+
+It may be possible to do something similar to UI. Instead of attaching an animator, UI would take a sprite, and animator, much like with dst
+would take a srite *. If it is null then this sprite ptr will refernce the animator's own sprite. In this way everything can either have a single
+sprite or be animated indirectly. The only problem would be wth changing the state of the animator, since we don't have a direct reference to it,
+but I feel like this approach may be the most correct. I just need to think about it a little more
+
+----------------------------------------------------------------------------
+
+There's a few ways to do this though I am not quite sure yet, which is better.
+Regardless, all of them keep a ptr to Animtor in the sprite itself. This ptr of course can, and should be null if not animator is linked to it.
+Then there is the matter of what "linked" means in this context. It is possible that every relevant part of the sprite (src, spriteSheet) updates as the animator
+does its thing. However it makes it slghtly more of a pain to swap anmator as one has to be unlinked before the other is linked.
+This would be if, additionally to taking a srpte ptr, animator links its src & spriteSheet to that sprite instead of changing its values.
+
+Finally, there is the question of whether to require animators to be linked to  a sprite or be free to render regardless.
+I am more on the side of rendering regardless, although an animator by itself is not really useful. The other alternative would mean that one needs to allocate
+an additonal sprite for every animator that is created.
+On the other hand, allowinf it to render regardless means that similar things can be referenced in different ways.
+
+-----------------------------------------------------------------------------
+
+With a little more thinking I realize that this is a non issue. A sprite holds a reference to its animator. An animator holds reference to the sprite within itsself
+and therefore to itself. So animator are really just integrant parts of a sprite an can be described with one.
+

@@ -1,35 +1,5 @@
 #include "SDLX/SDLX.h"
 
-# define QUEUE_CT 3
-
-typedef struct SDLX_QueuesInfo
-{
-	SDLX_RenderQueue *renderQueues;
-	size_t queuesCount;
-	size_t queuesMax;
-}				SDLX_QueuesInfo;
-
-static SDLX_QueuesInfo _intern;
-
-void SDLX_RenderInit(void)
-{
-	size_t i;
-
-	i = 0;
-	_intern.queuesCount = QUEUE_CT;
-	_intern.queuesMax = QUEUE_CT;
-	_intern.renderQueues = calloc(QUEUE_CT, sizeof(SDLX_RenderQueue));
-	while (i < QUEUE_CT)
-	{
-		_intern.renderQueues[i].sprites = calloc(5,sizeof(SDLX_Sprite));
-		_intern.renderQueues[i].amount = 0;
-		_intern.renderQueues[i].capacity = 5;
-		i++;
-	}
-}
-
-extern SDLX_Animator *a;
-
 void	SDLX_ResetWindow(void)
 {
 	SDLX_Display *display;
@@ -57,38 +27,6 @@ void SDLX_RenderMessage(TTF_Font *font, char *msg, const SDL_Rect *src, const SD
 	SDL_FreeSurface(message);
 }
 
-void	SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite)
-{
-	// SDL_Log("Queue no %d\n", queue);
-	if (queue < 0 || queue >= _intern.queuesCount)
-		return ;
-	if (_intern.renderQueues[queue].capacity <= _intern.renderQueues[queue].amount)
-	{
-		// SDL_Log("Too many sprites\n");
-		_intern.renderQueues[queue].capacity *= 2;
-		_intern.renderQueues[queue].sprites = SDL_realloc(_intern.renderQueues[queue].sprites,_intern.renderQueues[queue].capacity * sizeof(SDLX_Sprite));
-	}
-	_intern.renderQueues[queue].sprites[_intern.renderQueues[queue].amount] = sprite;
-	// SDL_Log("Sprite set\n");
-	_intern.renderQueues[queue].amount++;
-}
-
-// In case user needs a render q to modifiy it
-SDLX_RenderQueue **SDLX_RenderQueue_FetchAll(int *amount)
-{
-	if (amount)
-		*amount = _intern.queuesCount;
-
-	return &_intern.renderQueues;
-}
-
-void SDLX_RenderQueue_Flush(int queueNo)
-{
-	// *amount = _intern.queuesCount;
-
-	queueNo += 0;
-}
-
 // This as a template display. User is free to create their own renderQ displayer
 // this one just puts everything on the screen starting from the lowest Queue (assumed to be the background queue)
 void	SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display)
@@ -99,7 +37,7 @@ void	SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display)
 	while (i < queue->amount)
 	{
 		SDL_RenderCopyEx(display->renderer,
-						queue->sprites[i].sprite_sheet,
+						queue->sprites[i].spriteSheet,
 						queue->sprites[i].srcptr,
 						queue->sprites[i].dstptr,
 						queue->sprites[i].angle,
@@ -191,28 +129,14 @@ void SDLX_RenderDrawCircle(SDL_Renderer *ren, SDLX_Circle circle)
         valx += 2;
         val += valx + 1;
 		SDL_RenderDrawPoint(ren, circle.x + x, circle.y + y);
-		SDL_RenderDrawPoint(ren, circle.x + y, circle.y + x);
-		SDL_RenderDrawPoint(ren, circle.x + x, circle.y - y);
-		SDL_RenderDrawPoint(ren, circle.x + y, circle.y - x);
-
 		SDL_RenderDrawPoint(ren, circle.x - x, circle.y + y);
+		SDL_RenderDrawPoint(ren, circle.x + x, circle.y - y);
 		SDL_RenderDrawPoint(ren, circle.x - x, circle.y - y);
 		SDL_RenderDrawPoint(ren, circle.x - y, circle.y - x);
+		SDL_RenderDrawPoint(ren, circle.x + y, circle.y - x);
 		SDL_RenderDrawPoint(ren, circle.x - y, circle.y + x);
+		SDL_RenderDrawPoint(ren, circle.x + y, circle.y + x);
 		i += 8;
 	}
 	// printf("Points %d circumfrence %d",i,(int)( 2 * M_PI * circle.radius ));
-}
-
-void SDLX_Render_DisplayAll(SDLX_Display *display)
-{
-	int i;
-
-	i = 0;
-	while (i < _intern.queuesCount)
-	{
-		SDLX_RenderQueueDisplay(&_intern.renderQueues[i], display);
-		i++;
-	}
-
 }
