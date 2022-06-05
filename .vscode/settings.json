@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "sdlx_structs.h": "c",
+        "sdl_image.h": "c",
+        "sdlx.h": "c"
+    }
+}

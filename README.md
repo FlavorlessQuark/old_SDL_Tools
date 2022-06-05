@@ -2,9 +2,11 @@
 
 Wrapper for the SDL library
 
+**This is the old version, the new version is located at 
+
 
 ### Table of Contents
-**[Dependncies](#dependncies)**<br>
+**[Dependencies](#dependncies)**<br>
 **[Contents](#contents)**<br>
 **[Known Issues](#known-issues)**<br>
 **[Usage](#usage)**<br>
