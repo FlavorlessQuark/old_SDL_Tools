@@ -101,11 +101,77 @@ SDLX_FPSAdjust will then wait the appropriate amoutn of time to maintain a const
 
 ## Init and Utils
 
+```
+void	SDLX_Start(char *name, int x, int y, int h, int w, int flags);
+```
+Inits SDLX and SDL. Sets the SDLX_Display struct with a window and renderer created from the parameters passed (window name, positions, dimension)
+
+```
+void			SDLX_BackgroundSet(SDL_Texture *bg);
+```
+Sets the backrgound image
+
+```
+SDLX_Display	*SDLX_DisplayGet(void);
+```
+Gets the SDLX_Display struct;
+
+void		SDLX_FPSAdjust(void);
+int			SDLX_MouseInRect(int x, int y, SDL_Rect rect);
+SDL_Texture *SDLX_LoadTexture(char *path, SDLX_Display *display);
+void		SDLX_SpriteCreate(SDLX_Sprite *spriteDst, SDL_Texture *tex, SDL_Rect *src, SDL_Rect *dst);
+SDL_bool			SDLX_DefaultCollision(SDLX_Collider *self, SDLX_Collider *other);
+
+static int	SDLX_NullGUIFunc(SDLX_GUIElem *elem){return 0;};
+int			SDLX_PointInCircle(SDL_Point point, SDLX_Circle circle);
+
+
+
 ## Rendering
+
+void			SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite);
+
+
+SDLX_RenderQueue**SDLX_RenderQueue_FetchAll(int *amount);
+
+void			SDLX_RenderMessage(TTF_Font *font, char *msg, const SDL_Rect *src, const SDL_Rect *dst);
+void			SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display);
+void			SDLX_ResetWindow(SDLX_Display *display);
+void 			SDLX_Render_DisplayAll(SDLX_Display *display);
 
 ## Input
 
+void        SDLX_InputMap(int sdl_code, int type, int sdlx_code, int value, int controller_no);
+
+void 		SDLX_InputResetBuffer(void);
+
+void		SDLX_InputMap  (int sdl_code, int type, int sdlx_code, int value, int SDL_UNUSED controller_no);
+void		SDLX_InputUpdate();
+void		SDLX_InputLoop(void);
+
+int 		SDLX_GetKeyMapState(int key);
+SDLX_Input	SDLX_InputGet();
+
 ## GUI
 
+void SDLX_GUIElem_Create(SDLX_GUIElem *dest,
+			SDLX_Sprite *sprite, const char *name,
+			SDLX_UIFunc isSelectFn,
+			SDLX_UIFunc OnSelectEnterFn,SDLX_UIFunc OnSelectExitFn,
+			SDLX_UIFunc OnSelectStayFn,	SDLX_UIFunc OnClickFn);
+void	SDLX_GUIElem_SetActive(SDLX_GUIElem *elem, int isActive);
+void	SDLX_GUIUpdate(void);
+void	SDLX_GUI_KeyMap(int up, int down, int left, int right, int select);
+void	SDLX_GUIElem_SetKbTarget(int isTarget,SDLX_GUIElem *target, SDLX_GUIElem *up, SDLX_GUIElem *down, SDLX_GUIElem *left, SDLX_GUIElem *right);
+
+void	SDLX_GUIElem_SetDefaultTarget(SDLX_GUIElem *defaultTarget);
+int		SDLX_DefaultGUISelect(SDLX_GUIElem *elem);
+
 ## Collisions
+
+void 	SDLX_CollisionsInit(void);
+void	SDLX_PollCollisions(void);
+void	SDLX_ResolveCollisions(void);
+void	SDLX_ColliderCreate(int layerMask, int type, void *collisionBox, SDLX_Collider *dst,
+							SDLX_CollisionFn collisionFn, SDLX_ReactionFn reactionFn, void *data);
 
