@@ -6,12 +6,14 @@ Wrapper for the SDL2 library
 
 
 ### Table of Contents
-**[Dependencies](#dependncies)**<br>
-**[Contents](#contents)**<br>
-**[Known Issues](#known-issues)**<br>
-**[Usage](#usage)**<br>
-**[Code example](#code-examples)**<br>
-**[Upcomming features and fixes](#upcoming-features-and-fixes)**<br>
+**[Overview](#overview)**<br>
+**[Dependencies](#dependencies)**<br>
+**[Get started](#get-started)**<br>
+**[Example](#code-example)**<br>
+**[Rendering](#rendering)**<br>
+**[Input](#input)**<br>
+**[GUI](#gui)**<br>
+**[Collisions](#collisions)**<br>
 
 ## Overview
 
