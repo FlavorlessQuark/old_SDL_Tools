@@ -10,6 +10,7 @@ Wrapper for the SDL2 library
 **[Dependencies](#dependencies)**<br>
 **[Get started](#get-started)**<br>
 **[Example](#code-example)**<br>
+**[Init / Utils](#init-and-utils)**<br>
 **[Rendering](#rendering)**<br>
 **[Input](#input)**<br>
 **[GUI](#gui)**<br>
@@ -97,6 +98,8 @@ Once we have everything we want to render in a render queue, we call RenderDispl
 SDLX_FPSAdjust will then wait the appropriate amoutn of time to maintain a constant framerate(in this casem 30FPS)
 
 <br><img align="center" src="Ressources/main.png"/><br>
+
+## Init and Utils
 
 ## Rendering
 
