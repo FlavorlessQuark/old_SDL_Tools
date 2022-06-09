@@ -113,69 +113,58 @@ Sets the backrgound image
 
 Gets the SDLX_Display struct;
 
-```
-void		SDLX_FPSAdjust(void);
-```
+`void		SDLX_FPSAdjust(void);`
+
 Delays subsequent code to match the frame rate set in SDLX_config.h
 
-```
-SDL_Texture *SDLX_LoadTexture(char *path, SDLX_Display *display);
-```
+`SDL_Texture *SDLX_LoadTexture(char *path, SDLX_Display *display);`
+
 Loads a texture from a path
 
-```
-void		SDLX_SpriteCreate(SDLX_Sprite *spriteDst, SDL_Texture *tex, SDL_Rect *src, SDL_Rect *dst);
-```
+`void		SDLX_SpriteCreate(SDLX_Sprite *spriteDst, SDL_Texture *tex, SDL_Rect *src, SDL_Rect *dst);`
+
 Initializes the sprite spriteDst withtexture, src and dst. If src is null, sprite._src will be undefined. Else sprite.src will point to sprite._src
 sprite.dst will point to sprite._dst;
 
-```
-SDL_bool			SDLX_DefaultCollision(SDLX_Collider *self, SDLX_Collider *other);
-```
+`SDL_bool			SDLX_DefaultCollision(SDLX_Collider *self, SDLX_Collider *other);`
+
 Default collision assumes the collider is a rectangle;
 
-```
-static int	SDLX_NullGUIFunc(SDLX_GUIElem *elem){return 0;};
-```
+`static int	SDLX_NullGUIFunc(SDLX_GUIElem *elem){return 0;};`
+
 Does nothing. Pass into GUIElem_create instead of NULL
 
-```
-int			SDLX_PointInCircle(SDL_Point point, SDLX_Circle circle);
-```
+`int			SDLX_PointInCircle(SDL_Point point, SDLX_Circle circle);`
+
 Returns 1 if a point is in a circle, else 0
 
 
 
 ## Rendering
 
-```
-void			SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite);
-```
+`void			SDLX_RenderQueueAdd(int queue, SDLX_Sprite sprite);`
+
 Add a sprite to the specified queue; Does nothing if the queue doesnt exist;
 
-```
-SDLX_RenderQueue**SDLX_RenderQueue_FetchAll(int *amount);
-```
+`SDLX_RenderQueue**SDLX_RenderQueue_FetchAll(int *amount);`
+
 Returns all the renderQueues and sets amount to the total count of returned queues;
 
-```
-void			SDLX_RenderMessage(TTF_Font *font, char *msg, const SDL_Rect *src, const SDL_Rect *dst);
-```
+`void			SDLX_RenderMessage(TTF_Font *font, char *msg, const SDL_Rect *src, const SDL_Rect *dst);`
+
 Renders text to the screen. Src specifies what portion of the text to render (NULL if all) and dst specifies the position and dimensions;
 
-```
-void			SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display); 
-```
+`void			SDLX_RenderQueueDisplay(SDLX_RenderQueue *queue, SDLX_Display *display);`
+
 Copies the content of a renderqueue to the renderer
 
-```
-void			SDLX_ResetWindow(SDLX_Display *display);
-```
+`void			SDLX_ResetWindow(SDLX_Display *display);`
+
 Clears the screen
 
-```
-void 			SDLX_Render_DisplayAll(SDLX_Display *display);
-```
+
+`void 			SDLX_Render_DisplayAll(SDLX_Display *display);`
+
 Copies the content of all queues to the renderer
 
 ## Input
@@ -195,32 +184,50 @@ returns the input struct
 
 ## GUI
 
+```
 void SDLX_GUIElem_Create(SDLX_GUIElem *dest,
 			SDLX_Sprite *sprite, const char *name,
 			SDLX_UIFunc isSelectFn,
 			SDLX_UIFunc OnSelectEnterFn,SDLX_UIFunc OnSelectExitFn,
 			SDLX_UIFunc OnSelectStayFn,	SDLX_UIFunc OnClickFn);
+```
 
-void	SDLX_GUIElem_SetActive(SDLX_GUIElem *elem, int isActive);
+Initializes the GUIElem dest. If unnedeed, the functions may be set to SDLX_NullGUIFunc
 
-void	SDLX_GUIUpdate(void);
+`void	SDLX_GUIElem_SetActive(SDLX_GUIElem *elem, int isActive);`
 
-void	SDLX_GUI_KeyMap(int up, int down, int left, int right, int select);
+Sets a GUIElem to be interactable and rendered
 
-void	SDLX_GUIElem_SetKbTarget(int isTarget,SDLX_GUIElem *target, SDLX_GUIElem *up, SDLX_GUIElem *down, SDLX_GUIElem *left, SDLX_GUIElem *right);
+`void	SDLX_GUIUpdate(void);`
 
-void	SDLX_GUIElem_SetDefaultTarget(SDLX_GUIElem *defaultTarget);
+Updates all active GUIElem
 
-int		SDLX_DefaultGUISelect(SDLX_GUIElem *elem);
+`void	SDLX_GUI_KeyMap(int up, int down, int left, int right, int select);`
+
+Maps SDL_Keycodes for button selection with the keyboard
+
+`void	SDLX_GUIElem_SetKbTarget(int isTarget,SDLX_GUIElem *target, SDLX_GUIElem *up, SDLX_GUIElem *down, SDLX_GUIElem *left, SDLX_GUIElem *right);`
+
+Sets a GUIElem to be selectable with the keyboard. up, down, left and right should be the elements to be selected when the respective key is pressed.
+
+`void	SDLX_GUIElem_SetDefaultTarget(SDLX_GUIElem *defaultTarget);`
+
+Default GUIElem to be selected when using the keyboard. this MUST be set if using the kayboard to select GUIElem
 
 ## Collisions
 
-void 	SDLX_CollisionsInit(void);
+`void	SDLX_PollCollisions(void);`
 
-void	SDLX_PollCollisions(void);
+Updates the collision array 
 
-void	SDLX_ResolveCollisions(void);
+`void	SDLX_ResolveCollisions(void);`
 
+Resolves the collisions in the collison array
+
+```
 void	SDLX_ColliderCreate(int layerMask, int type, void *collisionBox, SDLX_Collider *dst,
 							SDLX_CollisionFn collisionFn, SDLX_ReactionFn reactionFn, void *data);
+```
+
+Initializes the collider dst. A collider can only collider with objects within the same layermask. Type is 0 for rectangle and 1 for circle. collisionbox may be any structure that will be used to determine the hitbox of the collision and will be passed to collisionFn (which is the function used to check for collision) ReactionFn is the function that determines what happens after a collision has been detected.
 
