@@ -47,57 +47,107 @@ In this example, you will learn how to use the rendering, animator, input mappin
 
 The end product will be a small scene with an animated sprite that can be moved around and a button that can be hovered and clicked
 
-First we will need a struct to hold our data. We will need two sprite as well as two animatores to animate our sprites and one GUIElem to let our button be clieck and hovered
+```c
+#include "SDLX/SDLX.h"
+#include "SDL2/SDL_image.h"
 
-<br><img align="center" src="Ressources/struct.png"/><br>
+typedef struct t_example
+{
+	SDLX_Sprite  dragon;
+	SDLX_Sprite  buttonSprite;
 
-Here we set some simple functions that we will use with the button. When hovered  we change the animator state so that it plays a different animation, and we do the same on click.
+	SDLX_GUIElem button;
 
-<br><img align="center" src="Ressources/functions.png"/><br>
+	SDLX_Animator dragonAnimator;
+	SDLX_Animator buttonAnimator;
+}				t_example;
 
+t_example example;
 
-Next we need to initialize SDLX and give our data some values;
+int buttonHover(SDLX_GUIElem *elem)
+{
+	SDLX_Animator_StateSet(&example.buttonAnimator, 1, SDLX_NONE);
+}
 
-We will need a Display, as most things concerning rendering use SDL_renderer which is stored in the display struct along with window and background texture;
+int buttonClick(SDLX_GUIElem *elem)
+{
+	SDLX_Animator_StateSet(&example.buttonAnimator, 2, SDLX_NONE);
+	SDL_Log("CLICK %s\n", elem->name);
+}
 
-We will also need animations and textures from which to parse thone animations
+void init()
+{
+	SDLX_Display *display;
+	SDLX_Input 	input;
+	SDLX_Anim	**dragonanim;
+	SDLX_Anim	**buttonanim;
+	SDL_Texture *dragontex;
+	SDL_Texture *buttontex;
+	
+	SDLX_Start("DEFAULT", WIN_X, WIN_Y, WIN_H, WIN_W, SDL_WINDOW_SHOWN);
+	
+	dragonanim = calloc(1, sizeof(SDLX_Anim *));
+	buttonanim = calloc(2, sizeof(SDLX_Anim *));
+	display = SDLX_DisplayGet();
 
-First we want to start SDLX(this also inits SDL and the tff and image subsystems). We pass it the name of the window as well as its position and dimensions and a flag that would be passed to SDL_Init
+	SDLX_InputMap(SDL_SCANCODE_W, 1, SDLX_UP, 	1, -1);
+	SDLX_InputMap(SDL_SCANCODE_A, 1, SDLX_LEFT, 1, -1);
+	SDLX_InputMap(SDL_SCANCODE_S, 1, SDLX_DOWN, 1, -1);
+	SDLX_InputMap(SDL_SCANCODE_D, 1, SDLX_RIGHT,1, -1);
 
-Next, we want to allocate some space for our animations; (1 for our character and 3 for our button - hovered, clicked and idle - 
+	SDLX_InputMap(SDL_SCANCODE_UP, 1, SDLX_UP, 	1, -1);
+	SDLX_InputMap(SDL_SCANCODE_LEFT, 1, SDLX_LEFT, 1, -1);
+	SDLX_InputMap(SDL_SCANCODE_DOWN, 1, SDLX_DOWN, 1, -1);
+	SDLX_InputMap(SDL_SCANCODE_RIGHT, 1, SDLX_RIGHT,1, -1);
 
-Then we map our inputs. Mapping input takes and SDL scancode and maps it to an SDLX key (it can be mapped to anythign really). more info in [this section](#Input)
+	dragontex = SDL_CreateTextureFromSurface(display->renderer, IMG_Load("Assets/test.png"));
+	buttontex = SDL_CreateTextureFromSurface(display->renderer, IMG_Load("Assets/button.png"));
+	
+	dragonanim[0] = SDLX_AnimLoadHorizontal(dragontex, 8, 32, 32, SDLX_TRUE, 0, 0);
 
-After this we want to load our textures and parse the animations. AnimLoadHorizontal parses sprite sheets layed out horizontally
+	buttonanim[0] = SDLX_AnimLoadHorizontal(buttontex, 1, 64, 64, SDLX_FALSE, 0, 0);
+	buttonanim[1] = SDLX_AnimLoadHorizontal(buttontex, 9, 64, 64, SDLX_FALSE, 0, 0);
+	buttonanim[2] = SDLX_AnimLoadHorizontal(buttontex, 2, 64, 64, SDLX_FALSE, 64 * 8, 0);
 
-Next we create the sprite for the button and the character  as well as the Animators and UI elements.
+	SDLX_SpriteCreate(&example.dragon, dragontex, NULL, &(SDL_Rect){(WIN_W / 2) - 128, (WIN_H / 2) - 256, 256, 256});
+	SDLX_SpriteCreate(&example.buttonSprite, buttontex, NULL, &(SDL_Rect){(WIN_W / 2) - 128, (WIN_H / 2), 256, 256});
+	
+	SDLX_GUIElem_Create(&example.button, &example.buttonSprite, "button", SDLX_DefaultGUISelect, buttonHover, SDLX_NullGUIFunc, SDLX_NullGUIFunc, buttonClick);
 
-The UI element can be set using default functions (which do nothing)
+	SDLX_AnimatorCreate(&example.dragonAnimator, dragonanim, 1, &example.dragon);
+	SDLX_AnimatorCreate(&example.buttonAnimator, buttonanim, 3, &example.buttonSprite);
 
-It's mandatory to set the GUI default target and set the button to active. The former tells the engine which button should be defaulted to, and the second is needed to make buttons interactable and rendered automatically; There are more settings  that you can view [here](#GUI)
+	SDLX_GUIElem_SetDefaultTarget(&example.button);
 
-<br><img align="center" src="Ressources/Init.png"/><br>
+	example.button.active = SDLX_TRUE;
+}
 
+int main()
+{
+	SDLX_Display *display;
+	SDLX_Input input;
 
-Our main function is where we will have our loop. 
-We will need a display to render our sprites and an input struct to be able to get the input and use it.
-
-First we want to call our init function and set our display.
-
-In our loop, we clear the window and run the input loop (This loop is mandaotryorelse SDL will not render the window. This loop can and should be replaced with your own loop)
-
-Then we call InputUpdate to update the SDLX input (this should be called before your own input loop and does not consume the input)
-To set our input, we call InputGet. Now we can use our  input mappings to determine what we should do. Since we have mapped W and UP ARROW to SDLX_UP , if any of them is pressed, input.input[SDLX_UP] should be one.
-
-Then we call, in this order, GUI_Update to update the state of buttons and Animation Update to update the state of animators. 
-
-It is not necessary to add the sprites which have animators, as they render themselves but it is done here to show how to add a sprite to a render queue.
-
-Once we have everything we want to render in a render queue, we call RenderDisplayAll, to copy everything to the renderer, and then RenderPresent to display it on the screen
-
-SDLX_FPSAdjust will then wait the appropriate amoutn of time to maintain a constant framerate(in this casem 30FPS)
-
-<br><img align="center" src="Ressources/main.png"/><br>
+	init();
+	display = SDLX_DisplayGet();
+	while (1)
+	{
+		SDLX_ResetWindow(display);
+		SDLX_InputLoop();
+		SDLX_InputUpdate();
+		{
+			input = SDLX_InputGet();
+			example.dragon.dst->y += (input.input[SDLX_UP] * -5) + (input.input[SDLX_DOWN] * 5); 
+			example.dragon.dst->x += (input.input[SDLX_RIGHT] * 5) + (input.input[SDLX_LEFT] * -5); 
+		}
+		SDLX_GUIUpdate();
+		SDLX_AnimationUpdate();
+		SDLX_RenderQueueAdd(0, example.dragon);
+		SDLX_Render_DisplayAll(display);
+		SDL_RenderPresent(display->renderer); 
+		SDLX_FPSAdjust();
+	}
+}
+```
 
 ## Init and Utils
 
@@ -184,7 +234,7 @@ returns the input struct
 
 ## GUI
 
-```
+```c
 void SDLX_GUIElem_Create(SDLX_GUIElem *dest,
 			SDLX_Sprite *sprite, const char *name,
 			SDLX_UIFunc isSelectFn,
@@ -224,7 +274,7 @@ Updates the collision array
 
 Resolves the collisions in the collison array
 
-```
+```c
 void	SDLX_ColliderCreate(int layerMask, int type, void *collisionBox, SDLX_Collider *dst,
 							SDLX_CollisionFn collisionFn, SDLX_ReactionFn reactionFn, void *data);
 ```
