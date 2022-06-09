@@ -33,7 +33,7 @@ To use this library you will need the SDL2 headers in your includes/ folder, and
 Currently, only the .a and .so for Linux are available. If you are using another OS, you will need to compile those by hand or compile with the source code. To compile the .a and .so files, you must do the following: 
 
 ```
-git git@github.com:FlavorlessQuark/old_SDL_Tools.git
+git clone git@github.com:FlavorlessQuark/old_SDL_Tools.git
 cd old_SDL_Tools
 make dynamic
 make static
@@ -79,10 +79,10 @@ It's mandatory to set the GUI default target and set the button to active. The f
 <br><img align="center" src="Ressources/Init.png"/><br>
 
 
-In our mian function is where we will have our loop. 
+Our main function is where we will have our loop. 
 We will need a display to render our sprites and an input struct to be able to get the input and use it.
 
-First we want to callour init function and set our display.
+First we want to call our init function and set our display.
 
 In our loop, we clear the window and run the input loop (This loop is mandaotryorelse SDL will not render the window. This loop can and should be replaced with your own loop)
 
